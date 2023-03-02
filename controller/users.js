@@ -1,6 +1,7 @@
 const { response } = require('express');
-const User = require('../models/user');
 const bcryptjs = require('bcryptjs');
+
+const User = require('../models/user');
 
 const getUsers = async (req, res = response ) =>{
 
@@ -55,8 +56,6 @@ const putUsers = async (req, res) =>{
         rest.password = bcryptjs.hashSync( password, salt );
     }
 
-    console.log(id)
-
     const user = await User.findByIdAndUpdate( id, rest);
 
 
@@ -73,14 +72,9 @@ const deleteUsers = async (req, res) =>{
 
     const { id } = req.params;
 
-    // Delete from db fisically
-    // const user = await User.findByIdAndDelete( id );
+    const user = await User.findByIdAndUpdate( id, {active: false}, {new: true} );
 
-    const user = await User.findByIdAndUpdate( id, {active: false} );
-
-    res.json({
-        user
-    })
+    res.json(user)
 }
 
 
