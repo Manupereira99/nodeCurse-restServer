@@ -29,27 +29,29 @@ class Server {
         // Routes of my app
         this.router();
 
-        // Manage file upload
-        this.app.use(fileUpload({
-            useTempFiles : true,
-            tempFileDir : '/tmp/'
-        }));
     }
-
+    
     async connectDb (){
         await dbConnection();
     }
-
+    
     middleware() {
-
+        
         //CORS
         this.app.use( cors());
 
         // lecture and parse lobby
         this.app.use( express.json());
-
+        
         // public directory
         this.app.use( express.static('public'));
+        
+        // Manage file upload
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true
+        }));
     }
 
     router() {
